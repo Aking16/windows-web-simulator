@@ -25,7 +25,6 @@ jobs:
         run: |
           bun install
           bun next build
-          bun next export
 
       # Deploy to gh-pages branch
       - name: Deploy to GitHub Pages
