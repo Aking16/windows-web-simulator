@@ -1,10 +1,14 @@
 import type { NextConfig } from "next";
 
-const isGitHubPages = process.env.DEPLOY_TARGET === 'github-pages';
+const isProd = process.env.NODE_ENV === 'production';
 
 const nextConfig: NextConfig = {
-  assetPrefix: isGitHubPages ? 'https://aking16.github.io/windows-web-simulator' : '',
-  output: "export"
+  basePath: isProd ? '/windows-web-simulator' : '',
+  assetPrefix: isProd ? '/windows-web-simulator/' : '',
+  output: "export",
+  images: {
+    unoptimized: true
+  }
 };
 
 export default nextConfig;
