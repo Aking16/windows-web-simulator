@@ -24,6 +24,7 @@ jobs:
         run: |
           curl -fsSL https://bun.sh/install | bash
           set PATH=%USERPROFILE%\.bun\bin;%PATH%
+        shell: cmd
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
