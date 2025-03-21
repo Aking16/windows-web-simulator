@@ -1,14 +1,12 @@
 import Taskbar from "@/components/layout/taskbar";
-import { Button } from "@/components/ui/button";
+import Wallpaper from "@/components/layout/wallpaper";
 
 export default function Home() {
 
   return (
-    <div>
-      <Button>
-        Click me
-      </Button>
+    <div className="overflow-hidden">
       <Taskbar />
+      <Wallpaper />
     </div>
   );
 }

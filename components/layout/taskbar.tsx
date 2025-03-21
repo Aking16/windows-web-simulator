@@ -12,7 +12,7 @@ const Taskbar = () => {
   const date = new Date();
 
   return (
-    <div className="fixed bottom-0 left-0 flex items-center w-full border-t py-2">
+    <div className="fixed bottom-0 left-0 flex items-center w-full border-t py-1 bg-muted/10 backdrop-blur-2xl">
       <div className="mx-auto space-x-1">
         <Button variant="ghost" size="icon">
           <Image width={30} height={30} src="./icons/start-icon.svg" alt="start icon" />
