@@ -72,6 +72,7 @@ jobs:
           # You may remove this line if you want to manage the configuration yourself.
           static_site_generator: next
       - name: Restore cache
+        if: ${{ steps.detect-package-manager.outputs.manager != 'bun' }}
         uses: actions/cache@v4
         with:
           path: |
