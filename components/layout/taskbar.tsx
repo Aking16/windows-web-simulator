@@ -7,9 +7,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useOpenContext } from '@/context/OpenProvider';
 
 const Taskbar = () => {
   const date = new Date();
+  const { toggleApp } = useOpenContext();
 
   return (
     <div className="fixed bottom-0 left-0 flex items-center w-full border-t py-1 bg-background/80 backdrop-blur-2xl">
@@ -20,8 +22,8 @@ const Taskbar = () => {
         <Button variant="ghost" size="icon">
           <Image width={30} height={30} src="./icons/calculator-icon.png" alt="calculator icon" />
         </Button>
-        <Button variant="ghost" size="icon">
-          <Image width={30} height={30} src="./icons/chrome-icon.svg" alt="chrome icon" />
+        <Button variant="ghost" size="icon" onClick={() => toggleApp("Chrome")}>
+          <Image width={30} height={30} src="./icons/Chrome-icon.svg" alt="Chrome icon" />
         </Button>
         <Button variant="ghost" size="icon">
           <Image width={30} height={30} src="./icons/vscode-icon.svg" alt="visual studio icon" />
