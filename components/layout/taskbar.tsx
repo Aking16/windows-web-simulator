@@ -1,33 +1,23 @@
-import React from 'react';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import { Bell, ChevronUp } from 'lucide-react';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useOpenContext } from '@/context/OpenProvider';
+import { Bell, ChevronUp } from 'lucide-react';
+import Image from 'next/image';
+import { apps } from '@/constants/apps';
+import TaskbarButton from '../custom-ui/taskbar-button';
 
 const Taskbar = () => {
   const date = new Date();
-  const { toggleApp } = useOpenContext();
 
   return (
     <div className="fixed bottom-0 left-0 flex items-center w-full border-t py-1 bg-background/80 backdrop-blur-2xl">
       <div className="mx-auto space-x-1">
-        <Button variant="ghost" size="icon">
-          <Image width={30} height={30} src="./icons/start-icon.svg" alt="start icon" />
-        </Button>
-        <Button variant="ghost" size="icon">
-          <Image width={30} height={30} src="./icons/calculator-icon.png" alt="calculator icon" />
-        </Button>
-        <Button variant="ghost" size="icon" onClick={() => toggleApp("Chrome")}>
-          <Image width={30} height={30} src="./icons/Chrome-icon.svg" alt="Chrome icon" />
-        </Button>
-        <Button variant="ghost" size="icon">
-          <Image width={30} height={30} src="./icons/vscode-icon.svg" alt="visual studio icon" />
-        </Button>
+        {apps.map(app => (
+          <TaskbarButton key={app.name} appName={app.name} appIcon={app.icon} />
+        ))}
       </div>
       <div className="flex flex-row-reverse items-center">
         <Button variant="ghost" className="me-2">
