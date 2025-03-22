@@ -7,6 +7,7 @@ const Wallpaper = () => {
       <Image
         width={1920}
         height={1080}
+        aria-disabled
         src="./wallpapers/white-theme-1.webp"
         alt="white theme wallpaper"
         className="w-screen h-screen" />
