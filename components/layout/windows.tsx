@@ -1,7 +1,7 @@
 "use client";
 
 import { Minus, Square, X } from 'lucide-react';
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useOpenContext } from '@/context/OpenProvider';
 import Image from 'next/image';
@@ -13,10 +13,11 @@ interface WindowsProps {
 }
 
 const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ x: 100, y: 10 });
   const [isDragging, setIsDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const { closeApp, toggleApp } = useOpenContext();
+  const divRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setIsDragging(true);
@@ -38,9 +39,30 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
     setIsDragging(false);
   };
 
+  const handleFullScreen = () => {
+    const div = divRef.current;
+
+    if (!div) return;
+
+    console.log("!w-screen" in div.classList);
+    console.log(div.className);
+
+    if (div.classList.contains("!w-screen")) {
+      div.className = div.className.replace(" !w-screen !h-screen", "");
+      div.className += " rounded-lg";
+    } else {
+      div.className += " !w-screen !h-screen";
+      div.className = div.className.replace("rounded-lg", "");
+      setPosition({
+        x: 0,
+        y: 0,
+      });
+    }
+  };
+
   return (
     <div
-      className="bg-background border w-[60rem] h-[45rem] rounded-lg"
+      className="bg-background border w-[60vw] h-[45vw] rounded-lg z-40"
       style={{
         position: 'absolute',
         left: position.x,
@@ -51,7 +73,7 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp} // Stop dragging if the mouse leaves the window
-    >
+      ref={divRef}>
       <div className="flex flex-row-reverse items-center">
         <Button
           variant="ghost"
@@ -61,7 +83,8 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
         </Button>
         <Button
           variant="ghost"
-          className="w-12 rounded-none text-muted-foreground/80">
+          className="w-12 rounded-none text-muted-foreground/80"
+          onClick={handleFullScreen}>
           <Square className="size-3" />
         </Button>
         <Button

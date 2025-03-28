@@ -13,7 +13,7 @@ const Taskbar = () => {
   const date = new Date();
 
   return (
-    <div className="fixed bottom-0 left-0 flex items-center w-full border-t py-1 bg-background/80 backdrop-blur-2xl">
+    <div className="fixed bottom-0 left-0 flex items-center w-full border-t py-1 bg-background/80 backdrop-blur-2xl z-50">
       <div className="mx-auto space-x-1">
         {apps.map(app => (
           <TaskbarButton key={app.name} appName={app.name} appIcon={app.icon} />
