@@ -1,10 +1,11 @@
 "use client";
 
-import { Minus, Square, X } from 'lucide-react';
-import { FC, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useOpenContext } from '@/context/OpenProvider';
+import { cn } from '@/lib/utils';
+import { Minus, Square, X } from 'lucide-react';
 import Image from 'next/image';
+import { FC, useState } from 'react';
 
 interface WindowsProps {
   children: React.ReactNode;
@@ -14,10 +15,10 @@ interface WindowsProps {
 
 const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
   const [position, setPosition] = useState({ x: 100, y: 10 });
-  const [isDragging, setIsDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [isFullscreen, setFullscreen] = useState(false);
   const { closeApp, toggleApp } = useOpenContext();
-  const divRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setIsDragging(true);
@@ -39,30 +40,14 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
     setIsDragging(false);
   };
 
-  const handleFullScreen = () => {
-    const div = divRef.current;
-
-    if (!div) return;
-
-    console.log("!w-screen" in div.classList);
-    console.log(div.className);
-
-    if (div.classList.contains("!w-screen")) {
-      div.className = div.className.replace(" !w-screen !h-screen", "");
-      div.className += " rounded-lg";
-    } else {
-      div.className += " !w-screen !h-screen";
-      div.className = div.className.replace("rounded-lg", "");
-      setPosition({
-        x: 0,
-        y: 0,
-      });
-    }
+  const handleFullscreen = () => {
+    setPosition({ x: 0, y: 0 });
+    setFullscreen(prev => !prev);
   };
 
   return (
     <div
-      className="bg-background border w-[60vw] h-[45vw] rounded-lg z-40"
+      className={cn("bg-background border z-40", isFullscreen ? "w-screen !h-[calc(100%-3rem)]" : "w-[60vw] h-[45vw] rounded-lg")}
       style={{
         position: 'absolute',
         left: position.x,
@@ -73,18 +58,18 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp} // Stop dragging if the mouse leaves the window
-      ref={divRef}>
+    >
       <div className="flex flex-row-reverse items-center">
         <Button
           variant="ghost"
-          className="w-12 rounded-none text-muted-foreground/80 rounded-tr-lg hover:bg-destructive hover:text-primary-foreground"
+          className={cn("w-12 rounded-none text-muted-foreground/80 hover:bg-destructive hover:text-primary-foreground", !isFullscreen && " rounded-tr-lg")}
           onClick={() => closeApp(appTitle)}>
           <X className="size-4" />
         </Button>
         <Button
           variant="ghost"
           className="w-12 rounded-none text-muted-foreground/80"
-          onClick={handleFullScreen}>
+          onClick={handleFullscreen}>
           <Square className="size-3" />
         </Button>
         <Button
@@ -98,7 +83,9 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
           <p>{appTitle}</p>
         </div>
       </div>
-      {children}
+      <div className="w-full h-[95.8%] rounded-b-lg">
+        {children}
+      </div>
     </div>
   );
 };
