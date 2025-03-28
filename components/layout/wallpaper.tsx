@@ -10,7 +10,7 @@ const Wallpaper = () => {
         aria-disabled
         src="./wallpapers/white-theme-1.webp"
         alt="white theme wallpaper"
-        className="w-screen h-screen" />
+        className="w-screen h-screen object-contain" />
     </div>
   );
 };
