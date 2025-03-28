@@ -14,11 +14,12 @@ interface WindowsProps {
 }
 
 const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
-  const [position, setPosition] = useState({ x: 100, y: 10 });
+  const { openApps, closeApp, toggleApp, handleOrdinal } = useOpenContext();
+
+  const [position, setPosition] = useState({ x: (openApps[appTitle].ordinal + 1) * 40, y: (openApps[appTitle].ordinal + 1) * 10 });
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [isFullscreen, setFullscreen] = useState(false);
-  const { closeApp, toggleApp, handleOrdinal } = useOpenContext();
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setIsDragging(true);
@@ -41,7 +42,10 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
   };
 
   const handleFullscreen = () => {
-    setPosition({ x: 0, y: 0 });
+    setPosition({
+      x: !isFullscreen ? 0 : 50,
+      y: !isFullscreen ? 0 : 10
+    });
     setFullscreen(prev => !prev);
   };
 
