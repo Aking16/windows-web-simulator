@@ -11,10 +11,20 @@ import { useOpenContext } from "@/context/OpenProvider";
 export default function Home() {
   const { openApps } = useOpenContext();
 
+  console.log(openApps);
+
+  // Sort apps by their ordinal value in descending order (most recently opened first)
+  const sortedApps = Object.entries(openApps)
+    .filter(([, appData]) => appData.isOpen) // Only include open apps
+    .sort(([, a], [, b]) => a.ordinal - b.ordinal); // Sort by ordinal in descending order
+
   return (
     <div className="overflow-hidden">
-      {openApps["Chrome"] && <Chrome />}
-      {openApps["Visual Studio Code"] && <VsCode />}
+      {sortedApps.map(([appName]) => {
+        if (appName === "Chrome") return <Chrome key={appName} />;
+        if (appName === "Visual Studio Code") return <VsCode key={appName} />;
+        return null;
+      })}
       <Desktop />
       <Activate />
       <Taskbar />

@@ -18,7 +18,7 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [isFullscreen, setFullscreen] = useState(false);
-  const { closeApp, toggleApp } = useOpenContext();
+  const { setOpenApps, closeApp, toggleApp, ordinal, setOrdinal } = useOpenContext();
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setIsDragging(true);
@@ -45,9 +45,20 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
     setFullscreen(prev => !prev);
   };
 
+  const handleOrdinal = () => {
+    setOrdinal(prev => prev + 1);
+    setOpenApps((prev) => ({
+      ...prev,
+      [appTitle]: {
+        isOpen: true,
+        ordinal: ordinal,
+      },
+    }));
+  };
+
   return (
     <div
-      className={cn("bg-background border z-40", isFullscreen ? "w-screen !h-[calc(100%-3rem)]" : "w-[60vw] h-[45vw] rounded-lg")}
+      className={cn("bg-background border z-40 relative", isFullscreen ? "w-screen !h-[calc(100%-3rem)]" : "w-[60vw] h-[45vw] rounded-lg")}
       style={{
         position: 'absolute',
         left: position.x,
@@ -58,7 +69,7 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp} // Stop dragging if the mouse leaves the window
-    >
+      onClick={handleOrdinal}>
       <div className="flex flex-row-reverse items-center">
         <Button
           variant="ghost"
