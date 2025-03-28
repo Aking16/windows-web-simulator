@@ -1,6 +1,7 @@
 "use client";
 
 import Chrome from "@/components/apps/chrome";
+import VsCode from "@/components/apps/vscode";
 import Activate from "@/components/layout/activate";
 import Desktop from "@/components/layout/desktop";
 import Taskbar from "@/components/layout/taskbar";
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       {openApps["Chrome"] && <Chrome />}
+      {openApps["Visual Studio Code"] && <VsCode />}
       <Desktop />
       <Activate />
       <Taskbar />
