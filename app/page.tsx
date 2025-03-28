@@ -11,8 +11,6 @@ import { useOpenContext } from "@/context/OpenProvider";
 export default function Home() {
   const { openApps } = useOpenContext();
 
-  console.log(openApps);
-
   // Sort apps by their ordinal value in descending order (most recently opened first)
   const sortedApps = Object.entries(openApps)
     .filter(([, appData]) => appData.isOpen) // Only include open apps

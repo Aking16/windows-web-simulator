@@ -13,8 +13,7 @@ interface OpenContextProps {
   openApp: (appName: string) => void;
   closeApp: (appName: string) => void;
   toggleApp: (appName: string) => void;
-  ordinal: number;
-  setOrdinal: Dispatch<SetStateAction<number>>;
+  handleOrdinal: (appName: string) => void;
 }
 
 const OpenContext = createContext<OpenContextProps | undefined>(undefined);
@@ -32,11 +31,12 @@ export const OpenProvider: React.FC<{ children: React.ReactNode; }> = ({ childre
   };
 
   const closeApp = (appName: string) => {
+    console.log(openApps);
+
     setOpenApps((prev) => ({
       ...prev,
-      [appName]: { ...prev[appName], isOpen: false },
+      [appName]: { isOpen: false, ordinal: 0 },
     }));
-    setOrdinal(prev => prev - 1);
   };
 
 
@@ -54,8 +54,19 @@ export const OpenProvider: React.FC<{ children: React.ReactNode; }> = ({ childre
     setOrdinal((prev) => prev + 1); // Increment the ordinal counter only when opening
   };
 
+  const handleOrdinal = (appName: string) => {
+    setOrdinal(prev => prev + 1);
+    setOpenApps((prev) => ({
+      ...prev,
+      [appName]: {
+        isOpen: true,
+        ordinal: ordinal,
+      },
+    }));
+  };
+
   return (
-    <OpenContext.Provider value={{ openApps, setOpenApps, openApp, closeApp, toggleApp, ordinal, setOrdinal }}>
+    <OpenContext.Provider value={{ openApps, setOpenApps, openApp, closeApp, toggleApp, handleOrdinal }}>
       {children}
     </OpenContext.Provider>
   );

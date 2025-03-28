@@ -18,7 +18,7 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [isFullscreen, setFullscreen] = useState(false);
-  const { setOpenApps, closeApp, toggleApp, ordinal, setOrdinal } = useOpenContext();
+  const { closeApp, toggleApp, handleOrdinal } = useOpenContext();
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setIsDragging(true);
@@ -45,17 +45,6 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
     setFullscreen(prev => !prev);
   };
 
-  const handleOrdinal = () => {
-    setOrdinal(prev => prev + 1);
-    setOpenApps((prev) => ({
-      ...prev,
-      [appTitle]: {
-        isOpen: true,
-        ordinal: ordinal,
-      },
-    }));
-  };
-
   return (
     <div
       className={cn("bg-background border z-40 relative", isFullscreen ? "w-screen !h-[calc(100%-3rem)]" : "w-[60vw] h-[45vw] rounded-lg")}
@@ -69,8 +58,10 @@ const Windows: FC<WindowsProps> = ({ children, appTitle, appIcon }) => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp} // Stop dragging if the mouse leaves the window
-      onClick={handleOrdinal}>
+    >
       <div className="flex flex-row-reverse items-center">
+        {/* Empty div so the handleOrdinal doesn't interfer with onClick events of the other button */}
+        <div className="absolute left-0 top-0 w-[calc(100%-9rem)] h-9" onClick={() => handleOrdinal(appTitle)}></div>
         <Button
           variant="ghost"
           className={cn("w-12 rounded-none text-muted-foreground/80 hover:bg-destructive hover:text-primary-foreground", !isFullscreen && " rounded-tr-lg")}
