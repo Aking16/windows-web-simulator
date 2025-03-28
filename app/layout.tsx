@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
-import "./globals.css";
 import { OpenProvider } from "@/context/OpenProvider";
+import type { Metadata } from "next";
+import { ThemeProvider } from 'next-themes';
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Windows Simulator",
@@ -13,12 +14,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`antialiased`}
-      >
+    <html lang="en" suppressHydrationWarning>
+      <body className={`antialiased`}>
         <OpenProvider>
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem>
+            {children}
+          </ThemeProvider>
         </OpenProvider>
       </body>
     </html>
